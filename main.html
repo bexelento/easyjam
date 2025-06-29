@@ -1,547 +1,83 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Miner</title>
-    <style>
-        body {
-            background: url("https://ic.pics.livejournal.com/zhiteltv/85404555/206178/206178_original.png");
-            background-size: cover;
-            text-align: center;
-            color: #7fffd4;
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
-        }
-        .dropbtn {
-            border-radius: 5px;
-            background-color: #184919;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            transition: 0.8s;
-        }
-        
-        .dropdown {
-            position: absolute;
-            display: inline-block;
-            right: 20px;
-            top: 20px;
-        }
-        
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: rgba(0, 40, 60, 0.9);
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 10px;
-            border: 1px solid #00ffff;
-        }
-        
-        .dropdown-content p {
-            color: #00ffaa;
-            padding: 12px 16px;
-            margin: 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
-        
-        .dropdown-content p:last-child {
-            border-bottom: none;
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-            transition: 0.5s;
-        }
-        
-        #work {
-            background-color: rgba(0, 255, 255, 0.182);
-        }
-        
-        .container {
-            background: rgba(0, 20, 30, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-        
-        h1 {
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-        }
-        
-        .status {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        
-        .stat-box {
-            background: rgba(0, 40, 60, 0.8);
-            border: 1px solid #00ffff;
-            border-radius: 10px;
-            padding: 10px;
-            min-width: 120px;
-        }
-        
-        button {
-            background: linear-gradient(to bottom, #0088cc, #0044aa);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 12px 24px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        
-        button:hover {
-            background: linear-gradient(to bottom, #00aaff, #0066cc);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
-        }
-        
-        button:active {
-            transform: translateY(1px);
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 30, 50, 0.9);
-            color: #00ffaa;
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: 1000;
-        }
-        
-        .inventory-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .item-name {
-            font-weight: bold;
-            color: #4facfe;
-        }
-        
-        .item-count {
-            color: #00ffaa;
-        }
-        
-        #booster {
-            background: linear-gradient(to bottom, #8B4513, #A0522D);
-        }
-        
-        /* Стили для alert окон */
-        .alert {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .alert-content {
-            background: rgba(0, 40, 60, 0.95);
-            border: 2px solid #00ffff;
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 90%;
-            width: 400px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-            color: #7fffd4;
-            text-align: center;
-        }
-        
-        .alert-input {
-            padding: 12px;
-            font-size: 16px;
-            background: rgba(0, 20, 30, 0.8);
-            border: 1px solid #00ffff;
-            border-radius: 5px;
-            color: #7fffd4;
-            width: 80%;
-            margin: 10px 0;
-            text-align: center;
-        }
-        @keyframes shake {
-         0% {transform: translateX(0) translateY(0);}
-         15% {transform: translateX(-6px)translateY(-3px);}
-         30% {transform: translateX(5px)translateY(2px);}
-         45% {transform: translateX(-4px)translateY(-1px);}
-          60% {transform: translateX(3px)translateY(1px);}
-           75% {transform: translateX(-5px)translateY(-2px);}
-            100% {transform: translateX(0)translateY(0);}
-        }
-        .alert-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            
-        }
-        
-        .defend-panel {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(120, 0, 0, 0.3);
-            border-radius: 10px;
-            border: 1px solid #ff5555;
-           
-        }
-        
-    </style>
-</head>
-<body>
-    <h1>КРИПТОНИТОВЫЙ РУДНИК</h1>
-    <div class="dropdown">
-        <button class="dropbtn">ИНВЕНТАРЬ</button>
-        <div class="dropdown-content">
-            <p id="inventory1">Лазер: <span class="item-count" id="laser-count">0</span></p>
-            <p id="inventory2">чая выпито: <span class="item-count" id="booster-count">0</span></p>
-            <p id="inventory3">Защита: <span class="item-count" id="shield-count">0</span></p>
-            <p id="inventory4">Кристаллы: <span class="item-count" id="crystal-count">0</span></p>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="status">
-            <div class="stat-box">
-                <h2>БАЛАНС</h2>
-                <h1 id="balanceh1">0</h1>
-            </div>
-            <div class="stat-box">
-                <h2>ТРЕБУЕТСЯ</h2>
-                <h1 id="mustValue">?</h1>
-            </div>
-            <div class="stat-box">
-                <h2>ВООРУЖЕНИЕ</h2>
-                <h1 id="weaponStatus">✖</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Crypto Miner</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <h1>КРИПТОНИТОВЫЙ РУДНИК</h1>
+        <div class="dropdown">
+            <button class="dropbtn">ИНВЕНТАРЬ</button>
+            <div class="dropdown-content">
+                <p id="inventory1">Лазер: <span class="item-count" id="laser-count">0</span></p>
+                <p id="inventory2">Чая выпито: <span class="item-count" id="booster-count">0</span></p>
+                <p id="inventory3">Защита: <span class="item-count" id="shield-count">0</span></p>
+                <p id="inventory4">Кристаллы: <span class="item-count" id="crystal-count">0</span></p>
             </div>
         </div>
-        
-        <div>
-            <button id='add'>ДОБАВИТЬ КРИПТОНИТ</button>
-            <button id="weapon">КУПИТЬ ЛАЗЕР (500$ или 17КР)</button>
-            <button id="booster">ВЫПИТЬ ЧАЙ (300$ или 10КР)</button>
-            <button id="home">ОТПРАВИТЬСЯ ДОМОЙ</button>
-        </div>
-    </div>
-    
-    <button id="work">МАЙНИТЬ</button>
-    <div class="notification" id="notification"></div>
-    <div id="input-alert" class="alert">
-        <div class="alert-content">
-            <h2>ДОБАВЛЕНИЕ КРИПТОНИТА</h2>
-            <p>Сколько криптонита добавляем?</p>
-            <input type="number" id="crypto-input" class="alert-input" >
-            <div class="alert-buttons">
-                <button id="alert-submit">ОК</button>
+
+        <div class="container">
+            <div class="status">
+                <div class="stat-box">
+                    <h2>БАЛАНС</h2>
+                    <h1 id="balanceh1">0</h1>
+                </div>
+                <div class="stat-box">
+                    <h2>ТРЕБУЕТСЯ</h2>
+                    <h1 id="mustValue">?</h1>
+                </div>
+                <div class="stat-box">
+                    <h2>ВООРУЖЕНИЕ</h2>
+                    <h1 id="weaponStatus">✖</h1>
+                </div>
+            </div>
+
+            <div>
+                <button id='add'>ДОБАВИТЬ КРИПТОНИТ</button>
+                <button id="weapon">КУПИТЬ ЛАЗЕР (500$ или 17КР)</button>
+                <button id="booster">ВЫПИТЬ ЧАЙ (300$ или 10КР)</button>
+                <button id="home">ОТПРАВИТЬСЯ ДОМОЙ</button>
             </div>
         </div>
-    </div>
-    
-    <div id="defend-alert" class="alert">
-        <div class="alert-content">
-            <h2>АТАКА!</h2>
-            <p>Местное существо атакует!</p>
-            <div class="defend-panel">
-                <button id="defend-btn" style=" animation: shake 0.4s infinite;
-            transform-origin: center;
-            position: relative;">ЗАЩИТИТЬСЯ</button>
+
+        <button id="work">МАЙНИТЬ</button>
+        <div class="notification" id="notification"></div>
+        <div id="input-alert" class="alert">
+            <div class="alert-content">
+                <h2>ДОБАВЛЕНИЕ КРИПТОНИТА</h2>
+                <p>Сколько криптонита добавляем?</p>
+                <!--suppress HtmlFormInputWithoutLabel -->
+                <input type="number" id="crypto-input" class="alert-input">
+                <div class="alert-buttons">
+                    <button id="alert-submit">ОК</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="win-alert" class="alert">
-        <div class="alert-content">
-            <h2>ПОБЕДА!</h2>
-            <p id="win-message"></p>
-            <div class="alert-buttons">
-                <button id="win-ok">ОК</button>
+
+        <div id="defend-alert" class="alert">
+            <div class="alert-content">
+                <h2>АТАКА!</h2>
+                <p>Местное существо атакует!</p>
+                <div class="defend-panel">
+                    <button id="defend-btn" style=" animation: shake 0.4s infinite;
+                transform-origin: center;
+                position: relative;">ЗАЩИТИТЬСЯ</button>
+                </div>
             </div>
         </div>
-    </div>
+        <div id="win-alert" class="alert">
+            <div class="alert-content">
+                <h2>ПОБЕДА!</h2>
+                <p id="win-message"></p>
+                <div class="alert-buttons">
+                    <button id="win-ok">ОК</button>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        
-        const weaponBtn = document.getElementById('weapon')
-        const boosterBtn = document.getElementById('booster')
-        const balanceEl = document.getElementById('balanceh1')
-        const addBtn = document.getElementById('add')
-        const mustValue = document.getElementById('mustValue')
-        const weaponStatus = document.getElementById('weaponStatus')
-        const notification = document.getElementById('notification')
-        const workBtn = document.getElementById('work')
-        const homeBtn = document.getElementById('home')
-        const laserCount = document.getElementById('laser-count')
-        const boosterCount = document.getElementById('booster-count')
-        const shieldCount = document.getElementById('shield-count')
-        const crystalCount = document.getElementById('crystal-count')
-        const inputAlert = document.getElementById('input-alert')
-        const defendAlert = document.getElementById('defend-alert')
-        const winAlert = document.getElementById('win-alert')
-        const cryptoInput = document.getElementById('crypto-input')
-        const alertSubmit = document.getElementById('alert-submit')
-        const defendBtn = document.getElementById('defend-btn')
-        const winOk = document.getElementById('win-ok')
-        const winMessage = document.getElementById('win-message')
-        let weaponble = false
-        let balance = 0
-        let must = generateMust()
-        let inventory = {
-            laser: 0,
-            booster: 0,
-            shield: 0,
-            crystal: 0
-        }
-        alert('2125 год . \n  на земле больше не осталось ресурсов и люди стали колонизеровать другие планеты .\n  Вы - один из учетников добытых ресурсов и сейчас ваша миссия ; собрать много криптонита . \n удачи '+
-            '(\n пояснение механик игры; \n  вы получаете уведомление о новой поставке криптонита(или число на табле ТРЕБУЕТСЯ обновиться ) ; чтобы зарегестрировать поставку нажмите на одноименную кнопку  , не расслабляйтесь обновление поставок проходит каждые 7 секунд , в случае неправельной регистрации вы будете получать штраф. при правильной регистрации 25 монет идут в ваш счет (пытайтесь не обанкротится а то проиграете) \n каждые 30 секунд на вас будут нападать существа поэтому захватите бластер(стоит 500 монет или 17кристалов)или за каждую не удачно отраженную атаку забирают монеты за мед помощь\n кристаллы выпадают с малым щансом при получении монеток и их нельзя корнвентировать ради баланса вселенной\n щиты или квоты уменьшают штраф в 2 раза \n чай увеличивает темп майнинга на 0.3 (изначально 0.2/клик)'
-        )
-                function статус() {
-            balanceEl.textContent = Math.floor(balance)
-            mustValue.textContent = must
-            weaponStatus.textContent = weaponble ? "✔" : "✖"
-            weaponBtn.textContent = weaponble ? "ЛАЗЕР КУПЛЕН" : `КУПИТЬ ЛАЗЕР (500)`
-            weaponBtn.disabled = weaponble || balance < 500 && inventory.crystal < 17
-                        boosterBtn.disabled = balance < 300 && inventory.crystal < 10 
-        }
-        
-        function инвентарь() {
-            laserCount.textContent = inventory.laser
-            boosterCount.textContent = inventory.booster
-            shieldCount.textContent = inventory.shield
-            crystalCount.textContent = inventory.crystal
-        }
-        
-        function showNotification(message, error = false) {
-            notification.textContent = message
-            notification.style.color = error ? '#ff5555' : '#00ffaa'
-            notification.style.opacity = 1
-            
-            setTimeout(() => {
-                notification.style.opacity = 0;
-            }, 3000)
-        }
-        function lose() {
-            alert('ВЫ ПРОИГРАЛИ')
-            window.close()
-        }
-        
-        let mining = 0.2
-        let boosterEffect = 0
-
-        статус()
-
-        function generateMust() {
-            return Math.floor(Math.random() * 101)
-        }
-        
-        function working() {
-            let work = mining + (inventory.booster * 0.1) + boosterEffect
-            balance += work
-            workBtn.textContent = `+${work}`
-            статус()
-            
-            if (Math.random() < 0.05 ) {
-                inventory.crystal++
-                showNotification("Найден редкий кристалл!", false)
-            инвентарь()
-            }
-        }
-        
-
-         
-        addBtn.addEventListener('click', () => {
-            cryptoInput.value = ""
-            inputAlert.style.display = 'flex'
-           inputAlert.focus()
-           статус()
-        });
-        
-        alertSubmit.addEventListener('click', () => {
-            const adding = parseInt(cryptoInput.value) || 0
-            inputAlert.style.display = 'none'
-            
-            if (adding === must) {
-                balance += 25;
-                must=generateMust()
-                   showNotification(`Новая поставка: ${must} единиц и монеты зачисленны`)
-                if (Math.random() < 0.3) {
-                    inventory.shield++
-                    showNotification("Получена квота защиты!", false)
-                  инвентарь()
-           
-                }
-            } else {
-                let штраф = Math.abs(must - adding)
-                
-                if (inventory.shield > 0) {
-                    inventory.shield--
-                 штраф    = Math.floor(штраф / 2)
-                    showNotification(`Квота поглотила часть штрафа ${штраф}`, true)
-                   инвентарь()
-           
-                } else {
-                    showNotification(`Нарушение! Штраф ${штраф} монеток`, true)
-                     статус()
-                }
-                       
-                
-                
-                balance =  balance - штраф
-                
-                if (balance <= 0) {
-                    setTimeout(() => {
-                        lose()
-                    }, 1000)
-                    return
-                }
-            }
-            
-           
-
-        });
-        
-        defendBtn.addEventListener('click', () => {
-            defendAlert.style.display= "flex"
-           if (weaponble){
-            showNotification("успешно защитился",false)
-            defendAlert.style.display = "none"
-            статус()
-           }
-           else{
-            balance -= 10
-            showNotification("-10 монет за мед помощь (купи лазер)",true)
-              defendAlert.style.display = "none"
-            статус()
-           }
-         
-        });
-        
-        winOk.addEventListener('click', () => {
-            winAlert.style.display = 'none'
-            balance = 0
-            weaponble = false
-            inventory = { laser: 0, booster: 0, shield: 0, crystal: 0 }
-            инвентарь()
-            статус()
-            window.close()
-        });
-        
-        weaponBtn.addEventListener('click', () => {
-            if (balance >= 500 && !weaponble) {
-                balance -= 500
-                weaponble = true
-                inventory.laser++
-                showNotification("Лазерный луч активирован!")
-               инвентарь()
-            статус()
-           
-            }
-            else if (inventory.crystal >= 17 && !weaponble) {
-                inventory.crystal -= 17;
-              weaponble = true
-                inventory.laser++
-                showNotification("Лазерный луч активирован! (за кристаллы)")
-                 инвентарь()
-            статус()
-            
-            
-            }
-            else if (weaponble) {
-                showNotification("Лазерный луч уже активирован!")
-            }
-            else {
-                showNotification("Не хватает монет или кристаллов")
-                
-            }
-        });
-        
-        boosterBtn.addEventListener('click', () => {
-            if (balance >= 300) {
-                balance -= 300
-                inventory.booster++
-                boosterEffect += 0.3
-                showNotification("Из всех завалявшихся пакетиков чая вы заварили со вкусом 'молотый криптон'. ВЫПИВ ЕГО ВЫ СТАЛИ РАБОТАТЬ ЭФФЕКТИВНЕЙ (+0,3 ПРИ МАЙНИНГЕ)");
-              инвентарь()
-            статус()
-            }
-        });
-
-        homeBtn.addEventListener('click', () => {
-            if (balance >= 2000) {
-               
-                
-            } else {
-                showNotification(`Вам нужно набрать еще ${2000 - balance} монеток для победы`, true)
-            }
-        });
-        
-        let dangerInterval;
-        let delivery
-        
-        function startIntervals() {
-            delivery = setInterval(() => {
-                must = generateMust()
-                showNotification(`Новая поставка: ${must} единиц`)
-               
-            статус()
-            }, 7000);}
-            
-          setInterval(() => {
-                defendAlert.style.display = 'flex';
-                
-                // наказание через 5 секунд без ответа
-                setTimeout(() => {
-                    if (defendAlert.style.display === 'flex') {
-                        defendAlert.style.display = 'none'
-                        if (!weaponble) {
-                            balance -= 10
-                            showNotification("-10 за мед. помощь", true)
-                           
-            статус();
-                            if (balance <= 0) {
-                                setTimeout(lose, 1000)
-                            }
-                        }
-                    }
-                }, 5000)
-            }, 30000)
-        
-    setInterval(() => {
-        статус()
-    },1000)
-       
-        startIntervals()
-    
-        workBtn.addEventListener('click', working)
-    </script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>
